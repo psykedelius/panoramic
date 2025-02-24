@@ -1,0 +1,110 @@
+
+.gallerie-zone{
+    position: absolute;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center;
+    overflow: hidden;
+    margin-top: auto;
+    margin-bottom: auto;
+    background: rgb(5,5,5);
+    width: 200px;
+    height: 100%;
+    background: rgb(5,5,5);
+background: linear-gradient(90deg, rgba(5,5,5,1) 0%, rgba(0,0,0,0.4550128534704371) 41%, rgba(0,0,0,0) 94%);
+opacity: 0;
+transition: opacity 0.5s ease-in-out;
+}
+.gallerie-zone:hover{
+    opacity: 1;
+}
+
+.gallerie-container{
+    position        : relative;
+    flex-direction  : column; 
+    justify-content : center; 
+    left   :-200px;
+    width  : 150px;
+    height : fit-content;
+    margin: 4px;
+    max-height: 50vh;
+    background: #00000000;
+    transition: all 0.3s ease-in-out;
+    overflow   : hidden;
+    overflow-y : scroll ;
+    /* For WebKit browsers (Chrome, Safari, and Opera) */
+    &::-webkit-scrollbar {
+        display: none; }
+    /* For Firefox */
+    scrollbar-width: none;
+    /* For Internet Explorer and Edge */
+    -ms-overflow-style: none;
+}
+
+.gallerie-container.active{
+    color: white; 
+    left:0px;
+}
+.gallerie-container>button{ 
+    display: flex;  
+    justify-content: center;
+    width: 100%; 
+    margin: 0px;
+    padding: 4px;
+}
+.gallerie-container>button>img{ 
+    display: flex; 
+    object-fit: cover; 
+    margin: 0px;
+    height: 100%; 
+    
+}
+
+.selected{
+    border: #ffffff solid 2px;
+    border-radius: 4px;
+}
+
+.upArrow{
+    display: flex;
+    position: relative;
+    cursor: pointer;
+    width: 100%;
+    left: -200px;
+    top:0px;
+    background-color: #ffffff;
+    height: 40px;
+    align-items: center;
+    transition: all 0.3s ease-in-out;
+}
+.upArrow.active{
+    left: 0px;
+}
+.downArrow{
+    display: flex;
+    position: absolute;
+    background-color: #ffffff;
+    height: 40px;
+    align-items: center;
+}
+
+.renderTypeContainer{
+    display: flex;
+    z-index: 3;
+    bottom: -50px;
+    width: 100%;
+    justify-content: center;
+    flex-direction: row;  
+    height: 50px;
+    margin: 0px;
+    background: #eb009d;
+    transition: all 0.3s ease-in-out;
+    
+}
+.renderTypeBtn{
+    display: flex;
+    justify-content: center; 
+    flex-direction: row; 
+    width: 100px;  
+}

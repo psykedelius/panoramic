@@ -1,0 +1,16 @@
+{
+"type": "FeatureCollection",
+"name": "datas",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::27571" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 1, "name": "pont", "northAngle": 0.0, "phaseCount":3, "featureType":"image" }, "geometry": { "type": "Point", "coordinates": [ 300608.083428150101099, 1054311.900692382827401 ] } },
+{ "type": "Feature", "properties": { "id": 2, "name": "rue", "northAngle": 20.0, "phaseCount":3, "featureType":"image" }, "geometry": { "type": "Point", "coordinates": [ 300664.853227710700594, 1054373.007054760120809 ] } },
+{ "type": "Feature", "properties": { "id": 1, "name": "pont", "northAngle": 0.0, "phaseCount":3, "featureType":"image" }, "geometry": { "type": "Point", "coordinates": [ 300608.083428150101099, 1054311.900692382827401 ] } },
+{ "type": "Feature", "properties": { "id": 1, "name": "pont", "northAngle": 0.0, "phaseCount":3, "featureType":"image" }, "geometry": { "type": "Point", "coordinates": [ 300608.083428150101099, 1054311.900692382827401 ] } },
+{ "type": "Feature", "properties": { "id": 1, "name": "pont", "northAngle": 0.0, "phaseCount":3, "featureType":"image" }, "geometry": { "type": "Point", "coordinates": [ 300608.083428150101099, 1054311.900692382827401 ] } },
+{ "type": "Feature", "properties": { "id": 1, "name": "pont", "northAngle": 0.0, "phaseCount":3, "featureType":"image" }, "geometry": { "type": "Point", "coordinates": [ 300608.083428150101099, 1054311.900692382827401 ] } },
+{ "type": "Feature", "properties": { "id": 1, "name": "pont", "northAngle": 0.0, "phaseCount":3, "featureType":"image" }, "geometry": { "type": "Point", "coordinates": [ 300608.083428150101099, 1054311.900692382827401 ] } },
+{ "type": "Feature", "properties": { "id": 1, "name": "pont", "northAngle": 0.0, "phaseCount":3, "featureType":"image" }, "geometry": { "type": "Point", "coordinates": [ 300608.083428150101099, 1054311.900692382827401 ] } },
+{ "type": "Feature", "properties": { "id": 3, "name": "rue2", "northAngle": 0.0, "phaseCount":3, "featureType":"image" }, "geometry": { "type": "Point", "coordinates": [ 300580.260938567342237, 1054196.536594416480511 ] } }
+]
+}
