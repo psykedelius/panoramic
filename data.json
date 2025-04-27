@@ -1,0 +1,11 @@
+{
+"type": "FeatureCollection",
+"features": [
+{ "type": "Feature", "properties": {"mediatype": "panorama","poiName": "panorama3","url":"Panorama3.jpg"}, "geometry": { "type": "Point", "coordinates": [ -63312.840199, 6019184.401544 ] } }
+,
+{ "type": "Feature", "properties": {"mediatype": "panorama","poiName": "panorama2","url":"Panorama2.jpg"}, "geometry": { "type": "Point", "coordinates": [ -63246.739498, 6019326.395644 ] } }
+,
+{ "type": "Feature", "properties": {"mediatype": "panorama","poiName": "panorama1","url":"Panorama1.jpg"}, "geometry": { "type": "Point", "coordinates": [ -63151.260706, 6019429.218959 ] } }
+
+]
+}

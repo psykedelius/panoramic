@@ -23,6 +23,16 @@ body{
     transition: all 0.3s ease-in-out;
 }
 
+.center{
+    display: flex;  
+    position: relative; 
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    
+}
+
 .img-title.active {
     background-color: rgba(0, 0, 0, 0.527);
     color: white;
@@ -65,15 +75,14 @@ body{
     background: #00d0eb;
     margin-left: 5px;
 }
-
-
-
+ 
 #viewport {
     position: relative;
     width: 100%;
     height: 100%; /* Ajustez selon vos besoins */
     overflow: hidden;
-    background: #000;
+    background: #000; 
+    transition: all 0.5s ease-in-out;
 }
 .viewport>img{ 
     height: 100%;  
@@ -130,9 +139,9 @@ body{
 }
 
 .btn-image img {
-    width: 100px; /* Ajustez selon vos besoins */
-    height: 100px;
+
     object-fit: cover;
+   /* filter: drop-shadow(0.35rem 0.35rem 0.4rem rgba(0, 0, 0, 0.5));*/
 }
 
 .btn-phase {
@@ -146,5 +155,16 @@ body{
 }
 
 .btn-phase:hover {
-    background-color: #f0f0f0;
+    background-color: #da6b6b;
+}
+
+/* VIEWPORT*/
+img-comparison-slider{
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #000;
+    transition: all 0.5s ease-in-out;
 }

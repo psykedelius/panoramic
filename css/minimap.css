@@ -1,0 +1,87 @@
+.bottom-interface{
+    position: absolute;
+    font-family: "Lato", sans-serif;
+    bottom: 0px; 
+    background-color: #ffffff;
+    font-size: 16px;
+}
+ 
+.projectName{
+    position: relative; 
+    line-height: 100%;
+    font-size: 1em;
+    font-weight: 400; 
+    letter-spacing: 0%;
+     /*text-shadow: 1px 1px 2px rgb(26, 26, 26); */ 
+    color: rgb(0, 0, 0); 
+    margin-top: 10px;
+    width: 100%;
+}
+.imgTitle{
+    position: relative; 
+    margin-top: 5px;
+    font-size: 1.5em;
+    font-weight: 700;
+    line-height: 100%;
+    letter-spacing: 0%;   
+    color: rgb(0, 0, 0);  
+    width: 100%;
+}
+.dropdown-item{
+    font-size: 1em;
+}
+
+#btn-prev{
+    background-image: url("../img/arrow_prev.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right;
+    height: 100%;
+    cursor: pointer;
+} 
+#btn-next{
+    background-image: url("../img/arrow_next.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: left;
+    height: 100%; 
+    cursor: pointer;
+}
+
+.vrButton{  
+    background-image: url("../img/badge-vr.svg");
+    transform-origin: center; 
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    color: rgb(0, 0, 0); 
+    width:50px;
+    height: 50px;
+}
+
+#map{ /* la carte DOIT avoir une hauteur sinon elle n'apparaît pas */
+    height:150px;
+    width:100%;
+}
+.fov-marker-container {
+    width: 24px;
+    height: 24px;
+}
+.fov-marker-img{
+    width: 24px;
+    height: 24px;
+    transform-origin: 12px 12px; 
+}
+
+.panoFrame{
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: transparent; /* Change to your desired color */
+    border: none; /* Remove border if needed */
+    z-index: -1; /* Adjust z-index as needed */
+}
