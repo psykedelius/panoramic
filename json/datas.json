@@ -6,6 +6,8 @@
 "features": [
 { "type": "Feature", "properties": { "imgName":"Panorama1.jpg", "name": "sud", "northOffset": -90, "phaseCount":3, "featureType":"image" }, "geometry": { "type": "Point", "coordinates": [ 47.470355, -0.568873 ] } }, 
 { "type": "Feature", "properties": { "imgName":"Panorama2.jpg", "name": "nord" , "northOffset": -90, "phaseCount":3, "featureType":"image" }, "geometry": { "type": "Point", "coordinates": [ 47.471945,-0.567055 ] } },
-{ "type": "Feature", "properties": { "imgName":"Panorama3.jpg", "name": "centre", "northOffset": -90, "phaseCount":3, "featureType":"image" }, "geometry": { "type": "Point", "coordinates": [ 47.471039, -0.568216 ] } }
+{ "type": "Feature", "properties": { "imgName":"Panorama3.jpg", "name": "centre", "northOffset": -90, "phaseCount":3, "featureType":"image" }, "geometry": { "type": "Point", "coordinates": [ 47.471039, -0.568216 ] } },
+{ "type": "Feature", "properties": { "imgName":"Panorama3.jpg", "name": "centre2", "northOffset": -90, "phaseCount":3, "featureType":"image" }, "geometry": { "type": "Point", "coordinates": [ 47.470955, -0.568051 ] } }
+
 ]
 }

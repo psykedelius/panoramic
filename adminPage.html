@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GeoJSON Form with Leaflet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Bootstrap & Leaflet -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+  
+  <style>
+    #map { height: 300px; }
+  </style>
+</head>
+<body class="p-4">
+
+<div class="container">
+  <h2>GeoJSON Generator</h2>
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#geoJsonModal">
+    Open GeoJSON Form
+  </button>
+
+  <div class="card mt-4">
+    <div class="card-header">Generated JSON</div>
+    <div class="card-body">
+      <pre id="output" class="bg-light p-3 rounded"></pre>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="geoJsonModal" tabindex="-1" aria-labelledby="geoJsonModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">GeoJSON Feature Collection Form</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <form id="geoForm">
+          <!-- Metadata -->
+          <div class="card mb-3">
+            <div class="card-header">Project Metadata</div>
+            <div class="card-body">
+              <div class="mb-3">
+                <label>Project Name</label>
+               <!-- <input type="text" class="form-control" id="crsName" value="urn:ogc:def:crs:EPSG::27571"> -->
+                <input type="text" class="form-control" id="projectName" value="new project">
+              </div>
+            </div>
+          </div>
+
+          <!-- Feature Inputs -->
+          <div class="card mb-3">
+            <div class="row">
+              <!-- col features -->
+              <div class="col-8">
+                <div class="card-header">Add/Edit Feature </div>
+                <div class="card-body row g-3">
+                    <div class="col-md-4"><input type="text" class="form-control" id="imgName" placeholder="POI Name"></div>
+                    <!--<div class="col-md-2"><input type="text" class="form-control" id="name" placeholder="Name"></div>-->
+                    <div class="col-md-2"><input type="number" class="form-control" id="northOffset" value="-90"></div>
+                    <!--<div class="col-md-2"><input type="number" class="form-control" id="phaseCount" value="3"></div>-->
+                    <div class="col-md-1"><input type="text" class="form-control" id="lat" placeholder="Lat" readonly></div>
+                    <div class="col-md-1"><input type="text" class="form-control" id="lng" placeholder="Lng" readonly></div>
+                    <div class="col-md-1"><button type="button" class="btn-add btn btn-primary" data-bs-dismiss="modal" aria-label="edit" id="edit-feature">Edit</button></div>
+                    <div class="col-md-1"><button type="button" class="btn-add btn btn-danger" data-bs-dismiss="modal" aria-label="suppr" id="suppr-feature">Suppr</button></div>       
+                    
+                </div>
+                <button type="button" class="btn-add btn btn-primary" data-bs-dismiss="modal" aria-label="add" id="add-img">Add</button>
+              </div>
+              <!-- col phases -->  
+              <div class="col-4">
+                <div class="card-header">Images par phase</div>
+                <div class="card-body">
+
+
+                  <ul class="list-group" id="imgPhaseList">
+                    <div class="row g-2 mb-2" id="imgPhase">
+                        <div class="col-md-4"> <input type="text" class="form-control" id="phaseName" placeholder="phaseName" value=""></div> 
+                        <div class="col-md-6"> <input type="text" class="form-control" id="imageUrl" placeholder="URL de l'image"> </div>
+                        <div class="col-md-2 d-grid"><button type="button" class="btn-add btn btn-danger" data-bs-dismiss="modal" aria-label="suppr" id="suppr-img">Suppr</button> </div>
+                    </div>
+                  </ul>
+                  <button type="button" class="btn btn-outline-primary" id="addImageBtn">Ajouter</button>
+                </div> 
+              </div>
+            </div>
+          </div>
+          <div class="card mb-3">
+          <!-- row map -->  
+          <div id="map" class="mt-3"></div>
+          </div>
+          
+
+          <!-- Feature List -->
+          <div class="card mb-3">
+            <div class="card-header">Features</div>
+            <ul class="list-group list-group-flush" id="featureList"></ul>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="btn btn-success">Generate JSON</button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const features = [];
+  let selectedIndex = null;
+
+  const latInput = document.getElementById('lat');
+  const lngInput = document.getElementById('lng');
+  const map = L.map('map').setView([47.471, -0.568], 17);
+  let marker;
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: 'Map data © OpenStreetMap contributors'
+  }).addTo(map);
+
+  map.on('click', function (e) {
+    const { lat, lng } = e.latlng;
+    latInput.value = lat.toFixed(6);
+    lngInput.value = lng.toFixed(6);
+    if (marker) map.removeLayer(marker);
+    marker = L.marker([lat, lng]).addTo(map);
+  });
+
+  function resetForm() {
+    ['imgName', 'name', 'northOffset', 'phaseCount', 'lat', 'lng'].forEach(id => document.getElementById(id).value = '');
+    selectedIndex = null;
+    if (marker) map.removeLayer(marker);
+    document.getElementById('addBtn').textContent = 'Add';
+    imgPhaseEntries = [];
+renderImgPhaseList();
+  }
+
+  function addFeature() {
+    const imgName = document.getElementById('imgName').value;
+    const name = document.getElementById('name').value;
+    const northOffset = parseFloat(document.getElementById('northOffset').value);
+    const phaseCount = parseInt(document.getElementById('phaseCount').value);
+    const lat = parseFloat(latInput.value);
+    const lng = parseFloat(lngInput.value);
+
+    if (!imgName || !name || isNaN(northOffset) || isNaN(phaseCount) || isNaN(lat) || isNaN(lng)) {
+      alert("Please fill in all fields correctly.");
+      return;
+    }
+
+    const feature = {
+      type: "Feature",
+      properties: {
+        imgName,
+        name,
+        northOffset,
+        phaseCount,
+        featureType: "image",
+        imgPhase: [...imgPhaseEntries] // ici l'ajout
+      },
+      geometry: {
+        type: "Point",
+        coordinates: [lat, lng]
+      }
+    };
+
+    if (selectedIndex !== null) {
+      features[selectedIndex] = feature;
+    } else {
+      features.push(feature);
+    }
+
+    renderFeatureList();
+    resetForm();
+  }
+
+  function renderFeatureList() {
+    const list = document.getElementById('featureList');
+    list.innerHTML = '';
+    features.forEach((f, i) => {
+      const li = document.createElement('li');
+      li.className = "list-group-item d-flex justify-content-between align-items-center";
+
+      li.innerHTML = `
+        ${f.properties.imgName} (${f.properties.name}) @ [${f.geometry.coordinates.join(', ')}]
+        <div>
+          <button class="btn btn-sm btn-secondary me-1" onclick="editFeature(${i})">Edit</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteFeature(${i})">Delete</button>
+        </div>
+      `;
+      list.appendChild(li);
+    });
+  }
+
+  function editFeature(index) {
+    const f = features[index];
+    document.getElementById('imgName').value = f.properties.imgName;
+    document.getElementById('name').value = f.properties.name;
+    document.getElementById('northOffset').value = f.properties.northOffset;
+    document.getElementById('phaseCount').value = f.properties.phaseCount;
+    latInput.value = f.geometry.coordinates[0];
+    lngInput.value = f.geometry.coordinates[1];
+    selectedIndex = index;
+    document.getElementById('addBtn').textContent = 'Update';
+
+    if (marker) map.removeLayer(marker);
+    marker = L.marker([f.geometry.coordinates[0], f.geometry.coordinates[1]]).addTo(map);
+    map.setView([f.geometry.coordinates[0], f.geometry.coordinates[1]], 17);
+    imgPhaseEntries = [...(f.properties.imgPhase || [])];
+renderImgPhaseList();
+  }
+
+  function deleteFeature(index) {
+    features.splice(index, 1);
+    renderFeatureList();
+    resetForm();
+  }
+
+
+  document.getElementById('addImageBtn').addEventListener('click', function (e) {
+    e.preventDefault();
+    const imgPhaseList = document.getElementById("imgPhaseList"); 
+    const newDiv = document.createElement("div");
+    newDiv.className = "row g-2 mb-2";
+    newDiv.innerHTML = `
+        <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="phaseName">
+        </div> 
+        <div class="col-md-6">
+            <input type="text" class="form-control" placeholder="URL de l'image">
+        </div>
+        <div class="col-md-2 d-grid">
+            <button type="button" class="btn-add btn btn-danger" aria-label="suppr">Suppr</button>
+        </div>
+    `;
+        // Add delete functionality to the "Suppr" button
+    newDiv.querySelector("button").addEventListener("click", () => {
+        imgPhaseList.removeChild(newDiv);
+    });
+
+    imgPhaseList.appendChild(newDiv);
+  });
+
+  document.getElementById('addBtn').addEventListener('click', addFeature);
+
+  document.getElementById('geoForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const geoJson = {
+      type: "FeatureCollection",
+      name: "datas",
+      crs: {
+        type: "name",
+        properties: {
+          name: document.getElementById('crsName').value
+        }
+      },
+      phaseOptions: {
+        optionA: document.getElementById('optionA').value,
+        optionB: document.getElementById('optionB').value,
+        optionC: document.getElementById('optionC').value
+      },
+      features: features
+    };
+
+    document.getElementById('output').textContent = JSON.stringify(geoJson, null, 2);
+    bootstrap.Modal.getInstance(document.getElementById('geoJsonModal')).hide();
+  });
+  // Ensure Leaflet tiles render correctly when modal is shown
+document.getElementById('geoJsonModal').addEventListener('shown.bs.modal', function () {
+  map.invalidateSize();
+});
+
+let imgPhaseEntries = [];
+
+document.getElementById('addImageBtn').addEventListener('click', function () {
+  const phase = document.getElementById('phaseName').value;
+  const url = document.getElementById('imageUrl').value;
+  if (!url) return;
+
+  imgPhaseEntries.push([phase, url]);
+  renderImgPhaseList();
+  document.getElementById('imageUrl').value = '';
+});
+
+function renderImgPhaseList() {
+  const list = document.getElementById('imgPhaseList');
+  list.innerHTML = '';
+  imgPhaseEntries.forEach(([phase, url], i) => {
+    const li = document.createElement('li');
+    li.className = "list-group-item d-flex justify-content-between align-items-center";
+    li.innerHTML = `
+      <div><strong>${phase}</strong>: ${url}</div>
+      <button class="btn btn-sm btn-danger" onclick="removeImgPhase(${i})">Supprimer</button>
+    `;
+    list.appendChild(li);
+  });
+}
+
+function removeImgPhase(index) {
+  imgPhaseEntries.splice(index, 1);
+  renderImgPhaseList();
+}
+</script>
+</body>
+</html>

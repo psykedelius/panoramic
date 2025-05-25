@@ -6,7 +6,7 @@
         let imgRotationOffset = 0;
         let btns = [];
         let gyroEnabled  = false;
-        let panoFrame = document.getElementById("panoFrame");
+        const panoFrame = document.getElementById("panoFrame");
         let pixelRatio ;
 
         const baseImgPath = baseUrl+"/textures/360/";
@@ -121,6 +121,7 @@
              // Update controls to reflect new rotation
              orbitControls.target.set(Math.sin(initialRotation), 0, Math.cos(initialRotation));
              orbitControls.update();
+             showPOIsFromCurrent(imgName, datas);
          }
  
   
