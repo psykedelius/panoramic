@@ -89,6 +89,8 @@
                 bottomInterface.style.fontSize = "12px";
                 imgOptions.style.height = "50px";
             }
+            const maxHeight = panoFrame.offsetHeight * 0.25;
+            bottomInterface.style.maxHeight = maxHeight + 'px';
         }
 
 
@@ -241,5 +243,6 @@
         console.log('Gyroscope disabled');
       }
 init();
+updateIterface(panoFrame.offsetWidth, panoFrame.offsetHeight);
 
         
