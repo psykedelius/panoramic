@@ -10,6 +10,92 @@ let projectPointMarkers = [];
 let defaultIcon = null; 
 let highlightedIcon = null;
 
+// --- Share Modal Functions ---
+
+function populateShareModal(project) {
+    const modal = document.getElementById('shareProjectModal');
+    const accessLevelSelect = document.getElementById('accessLevelSelect');
+    const privateSettingsDiv = document.getElementById('privateAccessSettings');
+    const authorizedUsersListDiv = document.getElementById('authorizedUsersList');
+
+    // Reset/Initialize Modal State
+    authorizedUsersListDiv.innerHTML = ''; // Clear previous list
+    document.getElementById('newUserEmail').value = '';
+    document.getElementById('newUserRole').value = 'view'; // Default role
+
+    // Ensure project.acces and project.authorizedUsers are initialized
+    if (typeof project.acces === 'undefined' && typeof project.authorizedUsers === 'undefined') {
+        project.acces = "private"; 
+        project.authorizedUsers = []; 
+    } else if (typeof project.acces === 'undefined' && Array.isArray(project.authorizedUsers)) {
+        // If only authorizedUsers exists, infer acces should be "private"
+        project.acces = "private";
+    } else if (project.acces === "all" && typeof project.authorizedUsers === 'undefined') {
+        // If public, ensure authorizedUsers is empty array
+        project.authorizedUsers = [];
+    } else if (project.acces !== "all" && typeof project.authorizedUsers === 'undefined') {
+        // If private but no authorizedUsers array (e.g. legacy or error), initialize it
+        project.authorizedUsers = [];
+    }
+
+
+    // Load Project's Access Settings
+    if (project.acces === "all") { 
+        accessLevelSelect.value = "public";
+        privateSettingsDiv.style.display = 'none';
+        modal._tempAuthorizedUsers = []; 
+    } else { 
+        accessLevelSelect.value = "private";
+        privateSettingsDiv.style.display = 'block';
+        // Prioritize project.authorizedUsers if it exists and is an array, otherwise handle legacy project.acces array
+        const usersToLoad = (Array.isArray(project.authorizedUsers) && project.authorizedUsers.length > 0) 
+                            ? project.authorizedUsers 
+                            : (Array.isArray(project.acces) ? project.acces : []);
+        modal._tempAuthorizedUsers = JSON.parse(JSON.stringify(usersToLoad));
+    }
+    renderAuthorizedUsersList(modal._tempAuthorizedUsers);
+}
+
+function renderAuthorizedUsersList(usersArray) {
+    const listDiv = document.getElementById('authorizedUsersList');
+    listDiv.innerHTML = ''; // Clear existing items.
+
+    if (!usersArray || usersArray.length === 0) {
+        listDiv.innerHTML = '<em>No users authorized yet.</em>';
+        return;
+    }
+
+    usersArray.forEach(user => {
+        const listItem = document.createElement('div');
+        listItem.style.display = 'flex';
+        listItem.style.justifyContent = 'space-between';
+        listItem.style.padding = '5px 0';
+        listItem.style.borderBottom = '1px solid #eee';
+
+        const userInfo = document.createElement('span');
+        userInfo.textContent = `${user.email} - (${user.role})`;
+        listItem.appendChild(userInfo);
+
+        const removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove';
+        removeButton.style.backgroundColor = '#ef4444'; // suppr-btn style
+        removeButton.style.color = 'white';
+        removeButton.style.border = 'none';
+        removeButton.style.padding = '0.25rem 0.5rem';
+        removeButton.style.borderRadius = '0.25rem';
+        removeButton.style.cursor = 'pointer';
+        
+        removeButton.addEventListener('click', () => {
+            const modal = document.getElementById('shareProjectModal');
+            // Remove by email, as IDs might not be stable or present on original data
+            modal._tempAuthorizedUsers = modal._tempAuthorizedUsers.filter(u => u.email !== user.email);
+            renderAuthorizedUsersList(modal._tempAuthorizedUsers);
+        });
+        listItem.appendChild(removeButton);
+        listDiv.appendChild(listItem);
+    });
+}
+
 // DOM Ready
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Admin page DOM fully loaded and parsed.');
@@ -91,6 +177,112 @@ document.addEventListener('DOMContentLoaded', () => {
             handleExportJson();
         });
     }
+
+    // Share Modal Event Listeners
+    const shareProjectBtn = document.getElementById('shareProjectBtn');
+    if (shareProjectBtn) {
+        shareProjectBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (!currentProject) {
+                alert("Please select a project first.");
+                return;
+            }
+            const modal = document.getElementById('shareProjectModal');
+            document.getElementById('shareModalProjectName').textContent = currentProject.name || 'N/A';
+            populateShareModal(currentProject);
+            modal.style.display = 'flex';
+        });
+    }
+
+    const closeShareModalBtn = document.getElementById('closeShareModalBtn');
+    if (closeShareModalBtn) {
+        closeShareModalBtn.addEventListener('click', () => {
+            document.getElementById('shareProjectModal').style.display = 'none';
+        });
+    }
+
+    const accessLevelSelect = document.getElementById('accessLevelSelect');
+    if (accessLevelSelect) {
+        accessLevelSelect.addEventListener('change', function() {
+            const privateSettingsDiv = document.getElementById('privateAccessSettings');
+            if (this.value === "public") {
+                privateSettingsDiv.style.display = 'none';
+            } else {
+                privateSettingsDiv.style.display = 'block';
+            }
+        });
+    }
+
+    const addUserToShareListBtn = document.getElementById('addUserToShareListBtn');
+    if (addUserToShareListBtn) {
+        addUserToShareListBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const modal = document.getElementById('shareProjectModal');
+            const emailInput = document.getElementById('newUserEmail');
+            const roleSelect = document.getElementById('newUserRole');
+            const email = emailInput.value.trim();
+            const role = roleSelect.value;
+
+            if (!email || !email.includes('@')) { // Basic email validation
+                alert("Please enter a valid email address.");
+                return;
+            }
+
+            if (!modal._tempAuthorizedUsers) { // Should be initialized by populateShareModal
+                modal._tempAuthorizedUsers = [];
+            }
+
+            const existingUser = modal._tempAuthorizedUsers.find(u => u.email === email);
+            if (existingUser) {
+                alert("This email is already in the list.");
+                return;
+            }
+
+            const newUser = { email: email, role: role };
+            modal._tempAuthorizedUsers.push(newUser);
+            renderAuthorizedUsersList(modal._tempAuthorizedUsers);
+
+            emailInput.value = ''; // Clear input
+            roleSelect.value = 'view'; // Reset role to default
+        });
+    }
+
+    const saveShareSettingsBtn = document.getElementById('saveShareSettingsBtn');
+    if (saveShareSettingsBtn) {
+        saveShareSettingsBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (!currentProject) {
+                alert("No project selected.");
+                return;
+            }
+
+            const accessLevel = document.getElementById('accessLevelSelect').value;
+            const modal = document.getElementById('shareProjectModal');
+            const tempUsers = modal._tempAuthorizedUsers || []; // Ensure it's an array
+
+            if (accessLevel === "public") {
+                currentProject.acces = "all";
+                currentProject.authorizedUsers = []; // Clear authorized users for public projects
+            } else { // private
+                // The requirement was to store the array directly in 'acces' or 'authorizedUsers'.
+                // Let's standardize on 'authorizedUsers' and set 'acces' to 'private' string.
+                currentProject.acces = "private";
+                currentProject.authorizedUsers = JSON.parse(JSON.stringify(tempUsers)); // Deep copy
+            }
+            
+            // Clean up old 'acces' if it was an array (legacy)
+            if (Array.isArray(currentProject.acces) && accessLevel === "public") {
+                 // If switching to public, and 'acces' was the old array, ensure it's set to "all"
+                 currentProject.acces = "all";
+            }
+
+
+            modal.style.display = 'none';
+            alert("Project share settings saved successfully!");
+            console.log("Updated project share settings:", currentProject);
+        });
+    }
+
 
     // Later: Call initializeAdminPage()
     initializeAdminPage(); 
@@ -196,7 +388,9 @@ function handleAddNewProject() {
         const newProject = {
             id: generateId(),
             name: projectName.trim(),
-            panoramicPoints: [] 
+            panoramicPoints: [],
+            acces: "private",       // Default access type
+            authorizedUsers: []     // Default empty list of authorized users
         };
         projectsData.push(newProject);
         currentProject = newProject; // Optionally select the new project
