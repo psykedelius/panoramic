@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['name']) || empty($_SESSION['name'])) {
+    header('Location: admin/login.php');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -267,7 +274,7 @@
 </head>
 <body>
     <header class="header">
-        <h1 class="header-title">Hello Username!</h1>
+        <h1 class="header-title">Hello <?php echo htmlspecialchars($_SESSION['name']); ?>!</h1>
         <a href="#" class="logout-link" id="logoutBtn">log out</a>
     </header>
 
