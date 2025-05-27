@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['name']) || empty($_SESSION['name'])) {
+    header('Location: admin/login.php');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -134,6 +141,7 @@
                 grid-column: span 2 / span 2; /* col-span-2 */
             }
         }
+ 
         .project-name-header {
             display: flex;
             align-items: center;
@@ -172,6 +180,11 @@
             padding: 1rem; /* p-4 */
             margin-top: 1rem; /* mt-4 */
             border: 1px solid #e5e7eb; /* border border-gray-200 */
+        }
+        .sub-panels-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* grid-cols-1 */
+            gap: 1rem; /* gap-4 */
         }
         .panoramic-point-details-panel {
             display: grid;
@@ -267,33 +280,44 @@
 </head>
 <body>
     <header class="header">
-        <h1 class="header-title">Hello Username!</h1>
+        <h1 class="header-title">Hello <?php echo htmlspecialchars($_SESSION['name']); ?>!</h1>
         <a href="#" class="logout-link" id="logoutBtn">log out</a>
     </header>
 
     <main class="container">
-        <section class="panel project-list-panel">
-            <h2 class="section-title">Project List</h2>
-            <div id="projectList" class="list-container">
-                <div class="list-item">
-                    <span class="list-item-header">Panoramic Gallery Project 01</span>
-                    <div class="list-item-actions">
-                        <button class="edit-btn">Edit</button>
-                        <button class="suppr-btn">Suppr</button>
+        
+            
+            <div class="sub-panel">
+                <section class="panel project-list-panel">
+                <h2 class="section-title">Project List</h2>
+                <div id="projectList" class="list-container">
+                    <div class="list-item">
+                        <span class="list-item-header">Panoramic Gallery Project 01</span>
+                        <div class="list-item-actions">
+                            <button class="edit-btn">Edit</button>
+                            <button class="suppr-btn">Suppr</button>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <span class="list-item-header">Panoramic Gallery Project 02</span>
+                        <div class="list-item-actions">
+                            <button class="edit-btn">Edit</button>
+                            <button class="suppr-btn">Suppr</button>
+                        </div>
                     </div>
                 </div>
-                <div class="list-item">
-                    <span class="list-item-header">Panoramic Gallery Project 02</span>
-                    <div class="list-item-actions">
-                        <button class="edit-btn">Edit</button>
-                        <button class="suppr-btn">Suppr</button>
-                    </div>
-                </div>
-            </div>
-            <button id="addNewProjectBtn" class="add-new-btn">Add new</button>
-            <button id="exportJsonBtn" class="add-new-btn" style="background-color: #f59e0b; margin-top: 5px;">Export All Data as JSON</button>
-        </section>
+                <button id="addNewProjectBtn" class="add-new-btn">Add new</button>
+                <button id="saveAllProjectsBtn" class="add-new-btn" style="background-color: #f59e0b; margin-top: 5px;">Save All</button>
+            </section>
 
+            </div>
+            <div class="sub-panel">
+                <section class="panel map-panel">
+                    <h2 class="section-title">Leaflet map displaying location of panoramic points</h2>
+                    <div id="map" class="map-container"></div>
+                </section>
+            </div>
+        
         <section class="panel project-details-panel">
             <div class="project-name-header">
                 <h2 class="section-title">Project Name: <span id="currentProjectNameDisplay">Panoramic Gallery Project 01</span></h2>
@@ -309,7 +333,7 @@
             </div>
 
             <div class="sub-panels-grid">
-                <div class="sub-panel">
+                <div class=" sub-panel">
                     <h3 class="sub-section-title">Panoramic point List</h3>
                     <div id="panoramicPointList" class="list-container">
                         <div class="list-item">
@@ -375,10 +399,7 @@
             </div>
         </section>
 
-        <section class="panel map-panel">
-            <h2 class="section-title">Leaflet map displaying location of panoramic points</h2>
-            <div id="map" class="map-container"></div>
-        </section>
+
     </main>
 
     <div id="shareProjectModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 1000;">
