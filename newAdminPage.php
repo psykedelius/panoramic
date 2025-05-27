@@ -141,7 +141,6 @@ if (!isset($_SESSION['name']) || empty($_SESSION['name'])) {
                 grid-column: span 2 / span 2; /* col-span-2 */
             }
         }
- 
         .project-name-header {
             display: flex;
             align-items: center;
@@ -333,7 +332,7 @@ if (!isset($_SESSION['name']) || empty($_SESSION['name'])) {
             </div>
 
             <div class="sub-panels-grid">
-                <div class=" sub-panel">
+                <div class="sub-panel">
                     <h3 class="sub-section-title">Panoramic point List</h3>
                     <div id="panoramicPointList" class="list-container">
                         <div class="list-item">
@@ -398,7 +397,6 @@ if (!isset($_SESSION['name']) || empty($_SESSION['name'])) {
                 </div>
             </div>
         </section>
-
 
     </main>
 
