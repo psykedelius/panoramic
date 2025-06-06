@@ -162,3 +162,43 @@
 [2025-05-28 01:33:39] UPDATE for ID 2 reported success. Rows affected: 1
 [2025-05-28 01:33:39] --- Request End ---
 
+[2025-06-07 01:32:56] ATTEMPTING TO START SCRIPT saveToDatabase.php. PHP_EOL Checkpoint 1: Script accessed.
+[2025-06-07 01:32:56] --- New Request Start (after initial log) ---
+[2025-06-07 01:32:56] User ID: 51
+[2025-06-07 01:32:56] Raw POST data: {"name":"project1b","panoramicPoints":[{"id":"_ndowizdeq","name":"New Point 1","coordinates":[47.472442,-0.573177],"northOffset":0,"imagesByPhase":[{"id":"_bnldvetse","phaseName":"qssqd","imageName":"qsdqsdqsdqs"},{"id":"_uud0iek7t","phaseName":"qsdqsdqs","imageName":"qsdqsdqs"},{"id":"_czrlij4y5","phaseName":"zerzer","imageName":"zerzrzerzrze"}]},{"id":"_2s7exk7bb","name":"New Point 2","coordinates":[47.479635,-0.563564],"northOffset":0,"imagesByPhase":[]},{"id":"_t2ia087kp","name":"New Point 3","coordinates":[47.475005,-0.582962],"northOffset":0,"imagesByPhase":[]}],"acces":"all","authorizedUsers":[],"clientTempId":"_6cutlpmyi","id":3}
+[2025-06-07 01:32:56] Operation type: UPDATE (Existing Project)
+[2025-06-07 01:32:56] Project ID for Update: 3
+[2025-06-07 01:32:56] Attempting UPDATE for project ID: 3
+[2025-06-07 01:32:56] UPDATE for ID 3 reported success. Rows affected: 1
+[2025-06-07 01:32:56] --- Request End ---
+
+[2025-06-07 01:32:56] ATTEMPTING TO START SCRIPT saveToDatabase.php. PHP_EOL Checkpoint 1: Script accessed.
+[2025-06-07 01:32:56] --- New Request Start (after initial log) ---
+[2025-06-07 01:32:56] User ID: 51
+[2025-06-07 01:32:56] Raw POST data: {"name":"project2","panoramicPoints":[{"id":"_coc9ow26y","name":"New Point 1","coordinates":[47.478591,-0.589828],"northOffset":0,"imagesByPhase":[]},{"id":"_zvp3hsuxu","name":"New Point 2","coordinates":null,"northOffset":0,"imagesByPhase":[]}],"acces":"private","authorizedUsers":[{"email":"psykedelius@gmail.com","role":"edit"}],"clientTempId":"_b24daktyt","id":4}
+[2025-06-07 01:32:56] Operation type: UPDATE (Existing Project)
+[2025-06-07 01:32:56] Project ID for Update: 4
+[2025-06-07 01:32:56] Attempting UPDATE for project ID: 4
+[2025-06-07 01:32:56] UPDATE for ID 4 reported success. Rows affected: 0
+[2025-06-07 01:32:56] --- Request End ---
+
+[2025-06-07 01:32:56] ATTEMPTING TO START SCRIPT saveToDatabase.php. PHP_EOL Checkpoint 1: Script accessed.
+[2025-06-07 01:32:56] --- New Request Start (after initial log) ---
+[2025-06-07 01:32:56] User ID: 51
+[2025-06-07 01:32:56] Raw POST data: {"name":"project3","panoramicPoints":[{"id":"_up07aphly","name":"New Point 1","coordinates":null,"northOffset":0,"imagesByPhase":[]}],"acces":"private","authorizedUsers":[],"clientTempId":"_2qng83e36","id":1}
+[2025-06-07 01:32:56] Operation type: UPDATE (Existing Project)
+[2025-06-07 01:32:56] Project ID for Update: 1
+[2025-06-07 01:32:56] Attempting UPDATE for project ID: 1
+[2025-06-07 01:32:56] UPDATE for ID 1 reported success. Rows affected: 0
+[2025-06-07 01:32:56] --- Request End ---
+
+[2025-06-07 01:32:56] ATTEMPTING TO START SCRIPT saveToDatabase.php. PHP_EOL Checkpoint 1: Script accessed.
+[2025-06-07 01:32:56] --- New Request Start (after initial log) ---
+[2025-06-07 01:32:56] User ID: 51
+[2025-06-07 01:32:56] Raw POST data: {"name":"project4","panoramicPoints":[],"acces":"private","authorizedUsers":[],"clientTempId":"_04s2njulk","id":2}
+[2025-06-07 01:32:56] Operation type: UPDATE (Existing Project)
+[2025-06-07 01:32:56] Project ID for Update: 2
+[2025-06-07 01:32:56] Attempting UPDATE for project ID: 2
+[2025-06-07 01:32:56] UPDATE for ID 2 reported success. Rows affected: 0
+[2025-06-07 01:32:56] --- Request End ---
+

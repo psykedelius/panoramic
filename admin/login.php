@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($user && password_verify($_POST['password'], $user['password'])) {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['name'] = $user['name'];
-            header("Location: ../newAdminPage.php");
+            header("Location: adminPage.php");
             exit;
         } else {
             $error_message = "Invalid credentials.";

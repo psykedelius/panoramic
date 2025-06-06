@@ -294,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function initializeAdminPage() {
     console.log('Admin page initializing...');
     try {
-        const response = await fetch('json/datas.json'); // Correct path
+        const response = await fetch('../json/datas.json'); // Correct path
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -315,7 +315,7 @@ async function initializeAdminPage() {
 
         console.log('Fetching existing projects...');
         try {
-            const response = await fetch('admin/readFromDatabase.php', {
+            const response = await fetch('readFromDatabase.php', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json'
@@ -1068,7 +1068,7 @@ async function handleSaveAllProjectsToDb() {
         console.log(`Client sending for ${logIdMessage}, Name: ${project.name}`, JSON.stringify(payload));
 
         try {
-            const response = await fetch('admin/saveToDatabase.php', {
+            const response = await fetch('saveToDatabase.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
